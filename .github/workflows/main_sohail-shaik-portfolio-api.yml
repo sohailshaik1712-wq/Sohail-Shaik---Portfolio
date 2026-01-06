@@ -44,14 +44,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
+          auth-type: IDENTITY
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9FEFF24A9F904EE0B81CF8585078911D }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E47E1D77AC6A48ABAE82AABF5050F3A7 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E8D44C355ACA436998EE131F147A3D0C }}
-          auth-type: oidc
-
+          
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: sohail-shaik-portfolio-api
           slot-name: Production
+
 
