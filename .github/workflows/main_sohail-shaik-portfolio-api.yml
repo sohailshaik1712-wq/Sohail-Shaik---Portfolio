@@ -16,19 +16,17 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - name: Install backend dependencies
+      - name: Install dependencies
         run: |
-          cd backend
-          python -m venv antenv
-          source antenv/bin/activate
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
 
-      - name: Upload backend artifact
+      - name: Upload app
         uses: actions/upload-artifact@v4
         with:
-          name: python-app
+          name: app
           path: backend/
 
   deploy:
@@ -36,23 +34,18 @@ jobs:
     needs: build
 
     steps:
-      - name: Download artifact
+      - name: Download app
         uses: actions/download-artifact@v4
         with:
-          name: python-app
+          name: app
 
       - name: Login to Azure
         uses: azure/login@v2
         with:
           auth-type: IDENTITY
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9FEFF24A9F904EE0B81CF8585078911D }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E47E1D77AC6A48ABAE82AABF5050F3A7 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E8D44C355ACA436998EE131F147A3D0C }}
-          
-      - name: Deploy to Azure Web App
+          subscription-id: 16a217bf-f426-4e0a-8bca-dbe73f417e12
+
+      - name: Deploy to Azure
         uses: azure/webapps-deploy@v3
         with:
           app-name: sohail-shaik-portfolio-api
-          slot-name: Production
-
-
